@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to("清空購物車", clean_carts_path, method: :delete, class: "pull-right", style: "text-decoration: underlinke;", data: {confirm: "你確定要清空購物車嗎？？"}) %>
+    <h2> Your Shoopin Cart</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">商品資訊</th>
+          <th>單價</th>
+          <th>數量</th>
+
+          <th>操作選項</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @items.each do |product| %>
+          <tr>
+            <td>
+              <%= link_to(product_path(product.product_id)) do %>
+                <% if product.product.image_url.url.present? %>
+                  <%= image_tag(product.product.image_url.medium.url, class: "thumbnail") %>
+                <% else %>
+                  <%= image_tag("http://placehold.it/200x200&text=No Pic", class: "thumbnail") %>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to(product.product.name, product_path(product.product_id)) %>
+            </td>
+            <td>
+            <%= product.product.price %>
+            </td>
+            <td>
+              <p>剩餘數量： <%= product.product.qty %> </p>
+              <% itemm = current_cart.cartitems.find_by(id: product) %>
+              <%= simple_form_for itemm, url: item_path(product) do |f| %>
+                <%= f.select :quantity, 1..product.product.qty %>
+                <%= f.submit "更新", data:{ disable_with: "Submiting..."} %>
+              <% end %>
+            </td>
+
+            <td>
+              <%= link_to(item_path(product), method: :delete) do %>
+                <i class="icon-trash icon-2x">  </i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+    <div class="total clearfix">
+      <span class="pull-right">
+        <span> 總計 <%= render_cart_total_price(current_cart) %> NTD</span>
+      </span>
+    </div>
+    <hr>
+    <div class="checkout clearfix">
+      <%= link_to("確認結帳", checkout_carts_path, method: :post, class: "btn btn-lg btn-danger pull-right") %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<h1>Admin Products list</h1>
+<%= link_to("新增產品", new_admin_product_path, class: "btn btn-primary pull-right") %>
+<br><br><br>
+<table class="table">
+
+
+  <thead>
+    <th>產品照片</th>
+    <th>產品名稱</th>
+    <th>產品價格</th>
+    <th>產品數量</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </thead>
+  <tbody>
+  <% @products.each do |product| %>
+    <tr>
+      <td>
+        <% if product.image_url.url.present? %>
+          <%= image_tag(product.image_url.medium.url) %>
+        <% else %>
+          <%= image_tag("http://loremflickr.com/100/100") %>
+        <% end %>
+      </td>
+      <td>
+        <%= product.name %>
+      </td>
+      <td>
+        $<%= product.price %>
+      </td>
+      <td>
+        <%= product.qty %>
+      </td>
+      <td>
+        <%= link_to("Edit",edit_admin_product_path(product), class: "btn btn-info") %>
+      </td>
+      <td>
+        <%= link_to("Delete", admin_product_path(product), method: :delete, data:{confirm: " 哩咖丁？？？"}, class: "btn btn-warning") %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

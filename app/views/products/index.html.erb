@@ -1,0 +1,24 @@
+<h1><%= t( "product_list" ) %></h1>
+
+<p>購物車有<span id="cart-total"> <%= current_cart.total_qty %> </span>個商品</p>
+
+<hr>
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-xs-6 col-md-3">
+      <%= link_to product_path(product) do %>
+        <% if product.image_url.url.present? %>
+          <%= image_tag(product.image_url, width: 200) %>
+        <% else %>
+          <%= image_tag("http://loremflickr.com/200/200") %>
+        <% end %>
+      <% end %>
+      <p ><br>
+      <%= product.name %> $ <%= product.price %>
+      </p>
+      <p>
+        <%= link_to "加入購物車", add_to_cart_product_path(product), :method => :post, :class => "btn btn-primary"%>
+      </p>
+    </div>
+  <% end %>
+</div>
